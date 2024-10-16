@@ -46,4 +46,14 @@ taskController.deleteTask = async (req, res) => {
     }
 };
 
+
+taskController.deleteAllTask = async (req, res) => {
+    try {
+        const data = await Task.deleteMany({});
+        res.status(200).json({ status: 'ok', data });
+    } catch (err) {
+        res.status(400).json({ status: 'fail', err });
+    }
+};
+
 module.exports = taskController
