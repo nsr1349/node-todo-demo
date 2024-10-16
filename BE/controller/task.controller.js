@@ -22,4 +22,19 @@ taskController.getTask = async (req, res) => {
     }
 }
 
+taskController.updateTask = async (req, res) => {
+    try {
+        const { task, isComplete } = req.body;
+        const data = await Task.findByIdAndUpdate(
+            req.params.id,
+            { task, isComplete }
+        );
+        if (!data) return res.status(404).json({ status: 'fail', message: 'Task not found' });
+        
+        res.status(200).json({ status: 'ok', data });
+    } catch (err) {
+        res.status(400).json({ status: 'fail', err });
+    }
+};
+
 module.exports = taskController
