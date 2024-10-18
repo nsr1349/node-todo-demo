@@ -15,7 +15,7 @@ taskController.createTask = async (req, res) => {
 
 taskController.getTask = async (req, res) => {
     try {
-        const taskList = await Task.find({}).select('-__v')
+        const taskList = await Task.find({}).select('-__v').sort({ createdAt: -1 })
         res.status(200).json({status : 'ok', data : taskList})
     } catch (err) {
         res.status(400).json({status : 'fail', err})
@@ -29,30 +29,30 @@ taskController.updateTask = async (req, res) => {
             req.params.id,
             { task, isComplete }
         );
-        if (!data) return res.status(404).json({ status: 'fail', message: 'Task not found' });
+        if (!data) return res.status(404).json({ status: 'fail', message: 'Task not found' })
 
-        res.status(200).json({ status: 'ok', data });
+        res.status(200).json({ status: 'ok', data })
     } catch (err) {
-        res.status(400).json({ status: 'fail', err });
+        res.status(400).json({ status: 'fail', err })
     }
 };
 
 taskController.deleteTask = async (req, res) => {
     try {
-        const data = await Task.findByIdAndDelete(req.params.id);
-        res.status(200).json({ status: 'ok', data });
+        const data = await Task.findByIdAndDelete(req.params.id)
+        res.status(200).json({ status: 'ok', data })
     } catch (err) {
-        res.status(400).json({ status: 'fail', err });
+        res.status(400).json({ status: 'fail', err })
     }
 };
 
 
 taskController.deleteAllTask = async (req, res) => {
     try {
-        const data = await Task.deleteMany({});
-        res.status(200).json({ status: 'ok', data });
+        const data = await Task.deleteMany({})
+        res.status(200).json({ status: 'ok', data })
     } catch (err) {
-        res.status(400).json({ status: 'fail', err });
+        res.status(400).json({ status: 'fail', err })
     }
 };
 
