@@ -14,7 +14,25 @@ userController.createUser = async (req, res) => {
         const newUser = new User({ email , name, password : bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds))})
         await newUser.save()
 
-        res.status(200).json({status : 'ok', data : newUser})
+        res.status(200).json({status : 'success', data : newUser})
+    } catch (err) {
+        res.status(400).json({status : 'fail', err})
+    }
+}
+
+userController.loginWithEmail = async (req, res) => {
+    
+    try {
+        
+        const { email, password } = req.body 
+        const user = await User.findOne({ email }).select('-__v -createdAt -updatedAt')
+        if (user){
+            const isMath = bcrypt.compareSync(password, user.password)
+            if (isMath){
+                const token = user.generateToken()
+                return res.status(200).json({status : 'success', user, token})
+            }
+        }
     } catch (err) {
         res.status(400).json({status : 'fail', err})
     }
