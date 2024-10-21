@@ -27,8 +27,9 @@ userController.loginWithEmail = async (req, res) => {
         if (user){
             const isMath = bcrypt.compareSync(password, user.password)
             if (isMath){
-                const token = user.generateToken()
-                return res.status(200).json({status : 'success', user, token})
+                // const token = user.generateToken()
+                // return res.status(200).json({status : 'success', user, token})
+                return res.status(200).json({status : 'success', user})
             }
         }
     } catch (err) {
